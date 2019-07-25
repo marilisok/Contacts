@@ -1,0 +1,148 @@
+table {
+    width: 300px;
+    border-collapse: collapse;
+}
+td, th {
+    padding: 3px;
+    border: 1px solid black;
+}
+th {
+    background: #b0e0e6;
+}
+
+#phonePopUp,#attachPopUp{
+    top:0;
+    left:0;
+    position:fixed;
+    background-color:rgba(0,0,0,0.74);
+    width:100%;
+    height:100%;
+    z-index:10000;
+}
+.tt {
+    position:relative;
+    background-color:#fff;
+    width:700px;
+    padding:12px;
+    opacity: 1;
+    height:500px;
+    margin:10% auto auto auto;
+    border:black solid 1px;
+}
+div.close {
+    cursor: pointer;
+    position: absolute;
+    font-weight: 700;
+    text-shadow: #000 1px 1px 0;
+    color: black;
+    right: 7px;
+    top: 2px;
+}
+a.active {
+    border-style: solid;
+    border-color: cornflowerblue;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+a.noactive{
+    border: solid aliceblue;
+    color: darkgrey;
+    background-color: aliceblue;
+    text-decoration: none;
+}
+
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    background-color: powderblue;
+}
+
+/* Style the active/current link */
+.pagination a.active {
+    background-color: mediumseagreen;
+    /*color: white;*/
+}
+
+/* Add a grey background color on mouse-over */
+.pagination a:hover:not(.active) {background-color: #ddd;}
+#image-popup-form {
+    display: inline-block;
+    padding: 5px 5px 5px 40px;
+    width: 500px;
+    min-height: 250px;
+    border: 1px solid black;
+    background: white;
+    vertical-align: middle;
+}
+
+#image-popup-form-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#image-popup-form-container:before {
+    display: inline-block;
+    height: 100%;
+    content: '';
+    vertical-align: middle;
+}
+#cover-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9000;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    opacity: 0.3;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    box-shadow: 0 0 5px 2px;
+}
+
+#imageInput {
+    display: none;
+}
+
+.img-centralize {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+#required label:after, #birth1 label:after {
+    color: #e32;
+    content: ' *';
+    display:inline;
+}
+

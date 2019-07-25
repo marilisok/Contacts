@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты</title>
+    <link href="style/style1.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="">
+                <span class="glyphicon glyphicon-user"></span>My Contacts
+            </a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="javascript:{}" onclick="add()">
+                        <span class="glyphicon glyphicon-plus"></span> Add contact
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:{}" onclick="editMenu(); return false;">
+                        <span class="glyphicon glyphicon-pencil"></span> Edit contact
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:{}" onclick="deleteContact(); return false;">
+                        <span class="glyphicon glyphicon-trash"></span> Delete contacts
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:{}" onclick="searchContacts(); return false;"><span class="glyphicon glyphicon-search">
+                </span> Search contacts
+                    </a>
+                </li>
+                <li><a href="javascript:{}" onclick="email(); return false;">
+                    <span class="glyphicon glyphicon-send"></span> Send Email
+                </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+   <div id="header1"></div>
+   <div id="target"></div>
+   <script id="template" type="x-tmpl-mustache">
+         <form id="mainForm" >
+
+         <table id="tab" class="table table-striped .table-bordered .table-hover">
+         <thead>
+         <tr>
+            <th></th>
+            <th>Full name</th>
+            <th>Birthday</th>
+            <th>Company</th>
+            <th>Address</th>
+         </tr>
+    </thead>
+           {{#contacts}}
+            <tr>
+
+                <td>
+                     <input type="checkbox" name="marked" form="checkbox" value={{contactId}}>
+                </td>
+
+                <td hidden="true">{{contactId}}</td>
+                <td><a href="javascript:{}"  onclick="editContact({{contactId}})">{{firstName}} {{lastName}} {{patronymic}}</a></td>
+                <td type="date" class="dateBirth">{{birthday}}</td>
+                <td>{{company}}</td>
+                <td>{{address.country}}  {{address.city}} {{address.street}} {{address.houseNumber}} {{address.flat}}  {{address.zipcode}}</td>
+                <td hidden="true"><input  name="email"  value="{{email}}"> </td>
+            </tr>
+           {{/contacts}}
+        </table>
+
+        </form>
+
+    </script>
+
+
+
+  <div class="container text-font">
+      <div id="header"></div>
+      <div id="target2"></div>
+   <script id="template2" type="x-tmpl-mustache">
+
+
+   <form id="contactForm">
+
+       <div class="row">
+
+            <div class="col-md-3" id="imageContact">
+
+                    <img id="image"
+                           name="userImage"
+                         class="img-responsive clickable"
+                           src="front?command=avatar&id={{contactId}}"
+                           value="{{contactId}}"
+
+                         alt=""
+                           onclick="showPopup()"
+                         >
+
+
+
+             </div>
+
+       <div class="col-md-4">
+               <div class="form-group" id="required">
+                   <label for="name">Имя</label>
+                   <input  type="text" class="form-control" id="name" name="name" value="{{firstName}}" placeholder="Имя" maxlength="150" />
+               </div>
+
+               <div name="requiredSurname" class="form-group" id="required">
+                   <label for="surname">Фамилия</label>
+                   <input type="text" class="form-control" id="surname" name="surname" value="{{lastName}}" placeholder="Фамилия" maxlength="150" />
+               </div>
+
+               <div class="form-group">
+                   <label for="middleName">Отчество</label>
+                   <input type="text" class="form-control" id="middleName" name="patronymic" value="{{patronymic}}" placeholder="Отчество" maxlength="150"/>
+               </div>
+               <div class="form-group" id="birth1">
+                   <label for="birth" id="required">Дата рождения</label>
+                   <input type="text" class="form-control"  id= "birth" name="birth" value="{{birthday}}" placeholder="1980-01-01" />
+               </div>
+               <div class="form-group" id="birthdayRange" style="display:none">
+               <label class="control-label col-sm-2">Дата рождения(от/до):</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control"  name="birthdayFrom" placeholder="Enter birthday">
+                    <input type="text"  class="form-control" name="birthdayTo" placeholder="Enter birthday">
+                </div>
+                </div>
+               <div class="form-group">
+
+                   <input type="text" class="hidden" id="contactGender" value="{{gender}}"/>
+                    <label for="gender">Пол</label><br/>
+                  <select id="gender" name="gender">
+
+                       <option value="NONE">--- Выбор ---</option>
+                       <option value="MALE">Мужской</option>
+                       <option value="FEMALE">Женский</option>
+                   </select>
+               </div>
+           </div>
+
+           <div class="col-md-4">
+               <div class="form-group">
+                   <label>Гражданство</label>
+                   <input type="text" class="form-control"  name="citizenship" value="{{citizenship}}" placeholder="Гражданство" maxlength="150"/>
+               </div>
+               <div class="form-group" id="website1">
+                   <label>Веб сайт</label>
+                   <input type="text" class="form-control"  name="website" value="{{website}}" placeholder="Веб сайт" maxlength="150"/>
+               </div>
+               <div class="form-group" id="email1">
+                   <label>Email</label>
+                   <input type="email" class="form-control" id="email" name="email" value="{{email}}" placeholder="Email" maxlength="150"/>
+               </div>
+               <div class="form-group" id="company1">
+                   <label>Место работы</label>
+                   <input type="text" class="form-control"  name="company" value="{{company}}" placeholder="Место работы" maxlength="150"/>
+               </div>
+               <div class="form-group">
+                   <input type="text" class="hidden" id="contactMaritalStatus" value="{{maritalStatus}}"/>
+                   <label for="marital">Семейное положение</label>
+                   <select id="marital" name="marital">
+                       <option value="NONE">--- Выбор ---</option>
+                       <option value="SINGLE">Холост/Не замужем</option>
+                       <option value="MARRIED">Женат/Замужем</option>
+                       <option value="DIVORCED">Разведён/Разведена</option>
+                       <option value="WIDOWED">Вдовец/Вдова</option>
+                   </select>
+               </div>
+           </div>
+       </div>
+
+       <hr>
+
+       <div class="row">
+           <h2>Адрес</h2>
+       </div>
+
+       <input hidden="true" value="{{address.addressId}}" name="addressId" readonly/>
+       <div class="row">
+           <div class="col-xs-6">
+               <div class="form-group">
+
+
+                   <label for="country">Страна</label>
+                   <input type="text" class="form-control" id="country" value="{{address.country}}" name="country"/>
+
+                   </select>
+               </div>
+           </div>
+           <div class="col-xs-6">
+               <div class="form-group" id="required" name="requiredCity">
+                   <label for="city">Город</label>
+                   <input type="text" class="form-control" id="city" name="city" value="{{address.city}}" placeholder="Город" maxlength="150"/>
+               </div>
+           </div>
+
+       </div>
+
+       <div class="row">
+           <div class="col-xs-6">
+               <div class="form-group">
+                   <label for="street">Улица</label>
+                   <input type="text" class="form-control" id="street" name="street" value="{{address.street}}" placeholder="Улица" maxlength="150"/>
+               </div>
+               <div class="form-group">
+                   <label for="zipCode">Индекс</label>
+                   <input type="text" class="form-control" id="zipCode" name="zipCode" value="{{address.zipCode}}" placeholder="Индекс" maxlength="10"/>
+               </div>
+           </div>
+           <div class="col-xs-3">
+               <div class="form-group">
+                   <label for="houseNumber">Номер дома</label>
+                   <input type="text" class="form-control" id="houseNumber" name="houseNumber" value="{{address.houseNumber}}" placeholder="Номер дома" maxlength="150"/>
+               </div>
+           </div>
+           <div class="col-xs-3">
+               <div class="form-group">
+                   <label for="apartmentNumber">Квартира</label>
+                   <input type="text" class="form-control" id="apartmentNumber" name="apartmentNumber" value="{{address.apartmentNumber}}" placeholder="Квартира" maxlength="45">
+               </div>
+           </div>
+       </div>
+
+       <hr>
+       <br>
+       <br>
+
+       <div class="row" id="buttonsPhones">
+           <div class="col-md-8">
+               <h2>Контактные телефоны</h2>
+           </div>
+           <div class="col-md-4 control-buttons-alignment">
+
+               <button title="Добавить телефон" type="button" class="btn btn-info"  onclick="phoneService.addPhone()">
+                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
+               </button>
+
+               <button type="button" class="btn btn-warning" title="Редактировать телефон" onclick="phoneService.editPhone()">
+                   <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Редактировать
+               </button>
+               <button type="button" class="btn btn-danger" title="Удалить телефон" onclick="phoneService.deletePhone()">
+                   <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить
+               </button>
+           </div>
+       </div>
+
+       <div class="row">
+           <table class="table table-hover" datatype="phone" id="tabPhone">
+               <tbody>
+               {{#phones}}
+                  <tr>
+                      <td>
+                      <div class="checkbox cell-alignment">
+                        <label>
+                          <input type='checkbox'  name='phones' value='{{phoneId}}'>
+                         </label>
+                       </div>
+                      </td>
+                      <td>
+                        <div class="cell-text-alignment">
+                        <input type='text'  name="fullNumber" value="{{countryCode}} {{operatorCode}} {{number}}" readonly/>
+                        </div>
+                      </td>
+                      <td>
+                      <!--<div class="cell-text-alignment">-->
+                        <input type='text'  name="typePhone" value="{{typePhone}}" readonly/>
+                      <!--<div>-->
+                      </td>
+                      <td>
+                      <!--<div class="cell-text-alignment">-->
+                        <input type='text'  name="comment" value="{{comment}}" readonly/>
+                       <!--</div>-->
+                        </td>
+                      <td hidden='true'><input hidden='true'  name="countyCode" value="{{countryCode}}" readonly/></td>
+                      <td hidden='true'><input hidden='true'  name="operatorCode" value="{{operatorCode}}" readonly/></td>
+                      <td hidden='true'><input hidden='true'  name="number" value="{{number}}" readonly/></td>
+                   </tr>
+              {{/phones}}
+              </tbody>
+           </table>
+       </div>
+
+
+       <br>
+       <br>
+
+       <div class="row" id="buttonsAttach">
+           <div class="col-md-8">
+               <h2>Список файлов</h2>
+           </div>
+           <div class="col-md-4 control-buttons-alignment">
+               <button onclick="attachService.addAttach()" type="button" class="btn btn-info" title="Добавить">
+                   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
+               </button>
+               <button onclick="attachService.editAttach()" type="button" class="btn btn-warning" title="Редактировать">
+                   <span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span> Редактировать
+               </button>
+               <button onclick="attachService.deleteAttach()" type="button" class="btn btn-danger" title="Удалить">
+                   <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Удалить
+               </button>
+           </div>
+       </div>
+
+       <div class="row">
+           <table class="table table-hover" id="tabAttach">
+
+               {{#attachments}}
+                   <tr>
+                       <td>
+                           <div class="checkbox cell-alignment">
+                               <label>
+                                   <input type="checkbox" value="{{attachmentsId}}" name='attaches' data-change="false" data-delete="false">
+                               </label>
+                           </div>
+                       </td>
+
+                       <td>
+
+                          <div class="cell-text-alignment"> <a href="front?command=attach&id={{contactId}}&filename={{randomFileName}}&realFileName={{fileName}}"  download="{{fileName}}">{{fileName}}</a></div>
+
+                       </td>
+                       <td>
+                           <div class="cell-text-alignment"> <input  value="{{dateOfLoad}}" readonly/> </div>
+                       </td>
+                       <td class="cell-text-alignment">
+                            <!--<div class="cell-text-alignment">-->  <input   name='attComment' id="attComment" value="{{comment}}" readonly/> <!--<div>-->
+
+
+                       </td>
+                       <td hidden="true">
+                           <input name='fileName' hidden="true" value="{{fileName}}">
+                       </td>
+                   </tr>
+               {{/attachments}}
+
+           </table>
+       </div>
+
+       <br/><br/><br/>
+       <div class="row" id="searchButtons" style="display:none">
+           <div class="col-md-3 col-md-offset-3 text-center">
+               <button type="submit" id="saveButton" onclick="search()" form="contactForm" class="btn btn-success btn-lg button-size">Поиск</button>
+           </div>
+           <div class="col-md-1 text-center">
+               <button type="button" id="cancelButton" onclick="cansel()" class="btn btn-danger btn-lg button-size" >Отмена</button>
+           </div>
+       </div>
+       <div class="row" id="mainButtons">
+           <div class="col-md-3 col-md-offset-3 text-center">
+               <button type="submit" id="saveButton" onclick="saveContact({{contactId}})" form="contactForm" class="btn btn-success btn-lg button-size">Сохранить</button>
+           </div>
+           <div class="col-md-1 text-center">
+               <button type="button" id="cancelButton" onclick="cansel()" class="btn btn-danger btn-lg button-size" >Отмена</button>
+           </div>
+       </div>
+       </form>
+       </script>
+
+
+       <!--Popup image form-->
+       <div id="image-popup-form-container" style="display:none">
+
+           <div id="image-popup-form">
+               <div id="image-popup-message"></div>
+               <input type="text" id="popupImageText" readonly/>
+               <input type='file' accept="image/jpeg" id="imageInput" onchange="chn()"/>
+               <input type="button" value="Найти" id="findImageButton" onclick="find()"/>
+               <img id="popup-image"
+                    class="img-responsive img-centralize"
+                    src="front?command=avatar&id=35"
+                    alt=""
+                  >
+
+               <input type="button" id="imageOk" value="Сохранить">
+               <input type="button" id="imageCancel" value="Отменить" >
+           </div>
+       </div>
+   <div id="phonePopUp" style="display:none">
+       <div class='tt'>
+           <div class="container">
+               <form id="telephone" class="form-horizontal" accept-charset="utf-8" role="form">
+                   <div style="margin: auto auto 2% auto">
+                       <div class="close" onclick="phoneService.cancelPhone()">x</div>
+                   </div>
+
+                   <div class="form-group">
+                       <label class="control-label col-sm-2" for="countryCode">Country code:</label>
+                       <div class="col-sm-2">
+                           <input  type="number" min="0" class="form-control" max="1000" id="countryCode"
+                                   name="countryCode" placeholder="Country code">
+                       </div>
+                   </div>
+
+                   <div class="form-group">
+                       <label class="control-label col-sm-2" for="operatorCode">Operator code:</label>
+                       <div class="col-sm-2">
+                           <input type="number" min="0" class="form-control" id="operatorCode" name="operatorCode"
+                                  placeholder="Operator code" required>
+                       </div>
+                   </div>
+
+                   <div class="form-group">
+                       <label class="control-label col-sm-2" for="phone">Telephone:</label>
+                       <div class="col-sm-5">
+                           <input type="number" min="0" class="form-control" id="phone" name="phone" placeholder="Telephone" required>
+                       </div>
+                   </div>
+
+                   <div class="form-group">
+                       <label for="kind" class="control-label col-sm-2">Kind:</label>
+                       <div class="col-sm-5">
+                           <input type="text" class="hidden" id="kindPhone" value="{{gender}}"/>
+                           <select name="kind" class="form-control" id="kind">
+                               <option></option>
+                               <option>Home</option>
+                               <option>Mobile</option>
+                           </select>
+                       </div>
+                   </div>
+
+                   <div class="form-group">
+                       <label class="control-label col-sm-2" for="comment">Comment:</label>
+                       <div class="col-sm-5">
+                            <textarea  class="form-control" rows="5" name="comment" id="comment"
+                                       maxlength="60"  placeholder="Type your comment..."></textarea>
+                       </div>
+                   </div>
+               </form>
+
+               <button   onclick="phoneService.savePhone()" class="btn btn-default">Save</button>
+               <button   onclick="phoneService.cancelPhone()" class="btn btn-default">Cancel</button>
+           </div>
+       </div>
+   </div>
+
+
+   <div id="attachPopUp" style="display: none">
+       <div id="attachTT">
+           <div class="container form-horizontal">
+               <form id="attachAdd">
+                   <div style="margin: auto auto 2% auto">
+                       <div class="close" onclick="attachService.cancelAttach()">x</div>
+                   </div>
+
+                   <div id="b_file_name">
+                       <div class="form-group" >
+                           <label class="control-label col-sm-2" for="file_name">File:</label>
+                           <div class="col-sm-5">
+                               <input  type="text" form="attachAdd" name="file_name" class="form-control" id="file_name" placeholder="file name">
+                           </div>
+                       </div>
+                   </div>
+
+                   <div id="b_attach">
+                       <div class="form-group" >
+                           <label class="control-label col-sm-2" for="attach">Choose file:</label>
+                           <div class="col-sm-5">
+                               <input  type="file"  form="attachAdd" class="form-control" id="attach" name="attach" multiple>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="form-group">
+                       <label class="control-label col-sm-2" for="attachComment">Comment:</label>
+                       <div class="col-sm-5">
+                            <textarea  class="form-control" form="attachAdd" rows="5" name="attachComment"
+                                       id="attachComment" maxlength="60" placeholder="Type your comment..."></textarea>
+                       </div>
+                   </div>
+
+                   <div class="col-md-3 col-md-offset-3 text-center">
+                        <button type="button" onclick="attachService.saveAttach()" class="btn btn-default" >Save</button>
+                   </div>
+                   <div class="col-md-1 text-center">
+                        <button type="button" onclick="attachService.cancelAttach()" class="btn btn-default">Cancel</button>
+                   </div>
+               </form>
+           </div>
+       </div>
+   </div>
+  </div>
+
+<div id="emailPopUp" style="display:none">
+    <div class="tt">
+        <div class="container">
+            <form  id="email" class="form-horizontal"
+                  accept-charset="utf-8" role="form">
+                <input type="hidden" name="command" value="email">
+                <div style="margin: auto auto 3% auto">
+                    <div class="close" onclick="openbox('emailPopUp')">x</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-1" for="address">To:</label>
+                    <div class="col-sm-5">
+                        <textarea  class="form-control" rows="1" name="address" id="address" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-1" for="subject">Subject:</label>
+                    <div class="col-sm-5">
+                        <input  type="text"  id="subject"  class="form-control" name="subject" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="templateEmail" class="control-label col-sm-1">Template:</label>
+                    <div class="col-sm-5">
+                        <select name="templateEmail" class="form-control" id="templateEmail" onchange="setTemplate()">
+                            <option>Without template</option>
+                            <option>Message to friend</option>
+                            <option>Message to boss</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-1" for="text">Text:</label>
+                    <div class="col-sm-5">
+                        <textarea  class="form-control" rows="8" name="text" id="text" placeholder="Type message..."
+                                   required ></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <button  type="submit" onclick="sendEmail()" class="btn-default">Send</button>
+            <button onclick="openbox('emailPopUp')" class="btn-default">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+
+<footer>
+
+    <div class="pagination" id="paging" style="background: powderblue" value="1" max="1" limit="1">
+
+
+    </div>
+    <div class="pagination" id="paging1" style=" display: none" value="1" max="1" limit="1">
+
+    </div>
+
+</footer>
+
+
+
+    <script src="js/email.js"></script>
+    <script src="js/searchContacts.js"></script>
+
+
+    <script src="js/contacts.js"></script>
+
+
+</body>
+</html>
